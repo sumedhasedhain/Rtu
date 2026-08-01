@@ -1,5 +1,6 @@
 from functools import lru_cache
 
+from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -11,6 +12,17 @@ class Settings(BaseSettings):
     api_v1_prefix: str = "/api/v1"
 
     database_url: str = "sqlite+aiosqlite:///./cycle_tracker.db"
+
+    @field_validator("database_url")
+    @classmethod
+    def _use_async_postgres_driver(cls, v: str) -> str:
+        # Managed Postgres providers (Render, Railway, Heroku-style envs) hand out a bare
+        # postgres(ql):// URL; our SQLAlchemy engine is async and needs the asyncpg driver.
+        if v.startswith("postgres://"):
+            return "postgresql+asyncpg://" + v[len("postgres://") :]
+        if v.startswith("postgresql://"):
+            return "postgresql+asyncpg://" + v[len("postgresql://") :]
+        return v
 
     secret_key: str = "dev-secret-key-change-me"
     jwt_algorithm: str = "HS256"

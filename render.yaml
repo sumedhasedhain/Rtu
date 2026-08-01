@@ -1,0 +1,28 @@
+# Render Blueprint — https://render.com/docs/blueprint-spec
+# Deploy: connect this repo in the Render dashboard ("New +" -> "Blueprint"), or run
+# `render blueprint launch` with the Render CLI. Render provisions the API + Postgres from
+# this file; the frontend is meant to be deployed separately to Vercel/Netlify (see vercel.json).
+services:
+  - type: web
+    name: cycle-tracker-api
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: cycle-tracker-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ENVIRONMENT
+        value: production
+      - key: CORS_ORIGINS
+        value: '["https://your-frontend-domain.vercel.app"]'
+
+databases:
+  - name: cycle-tracker-db
+    plan: free
+    postgresMajorVersion: "16"

@@ -1,0 +1,32 @@
+# Fly.io app config for the backend — https://fly.io/docs/reference/configuration/
+# Deploy: `fly launch --copy-config --no-deploy` once from repo root to link an app name,
+# `fly postgres create` for a managed Postgres cluster + `fly postgres attach`, then
+# `fly deploy` (uses backend/Dockerfile). Set secrets first: `fly secrets set SECRET_KEY=...`.
+app = "cycle-tracker-api"
+primary_region = "iad"
+
+[build]
+  context = "backend"
+  dockerfile = "Dockerfile"
+
+[env]
+  ENVIRONMENT = "production"
+  # DATABASE_URL and SECRET_KEY are set via `fly secrets set`, not committed here.
+
+[http_service]
+  internal_port = 8000
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+
+[[http_service.checks]]
+  grace_period = "10s"
+  interval = "30s"
+  method = "GET"
+  timeout = "5s"
+  path = "/health"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"
