@@ -11,6 +11,7 @@ from typing import Sequence, Union
 from alembic import op
 import sqlalchemy as sa
 
+from app.models.symptom import SymptomCategory
 
 # revision identifiers, used by Alembic.
 revision: str = 'e8c944a4129d'
@@ -18,29 +19,32 @@ down_revision: Union[str, None] = '524ccc47d371'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
+# Values are SymptomCategory members (not raw strings): SQLAlchemy's Enum type stores the
+# member *name* ("PHYSICAL") by default, not its .value ("physical") — bulk_insert bypasses
+# the ORM's automatic conversion, so this has to match that convention exactly.
 SYMPTOMS = [
-    ("cramps", "physical"),
-    ("headache", "physical"),
-    ("bloating", "physical"),
-    ("acne", "physical"),
-    ("fatigue", "physical"),
-    ("nausea", "physical"),
-    ("backache", "physical"),
-    ("tender_breasts", "physical"),
-    ("joint_pain", "physical"),
-    ("insomnia", "physical"),
-    ("mood_swings", "emotional"),
-    ("anxiety", "emotional"),
-    ("irritability", "emotional"),
-    ("sadness", "emotional"),
-    ("food_cravings", "emotional"),
+    ("cramps", SymptomCategory.PHYSICAL),
+    ("headache", SymptomCategory.PHYSICAL),
+    ("bloating", SymptomCategory.PHYSICAL),
+    ("acne", SymptomCategory.PHYSICAL),
+    ("fatigue", SymptomCategory.PHYSICAL),
+    ("nausea", SymptomCategory.PHYSICAL),
+    ("backache", SymptomCategory.PHYSICAL),
+    ("tender_breasts", SymptomCategory.PHYSICAL),
+    ("joint_pain", SymptomCategory.PHYSICAL),
+    ("insomnia", SymptomCategory.PHYSICAL),
+    ("mood_swings", SymptomCategory.EMOTIONAL),
+    ("anxiety", SymptomCategory.EMOTIONAL),
+    ("irritability", SymptomCategory.EMOTIONAL),
+    ("sadness", SymptomCategory.EMOTIONAL),
+    ("food_cravings", SymptomCategory.EMOTIONAL),
 ]
 
 symptoms_table = sa.table(
     "symptoms",
     sa.column("id", sa.Uuid()),
     sa.column("name", sa.String()),
-    sa.column("category", sa.Enum("physical", "emotional", name="symptom_category")),
+    sa.column("category", sa.Enum(SymptomCategory, name="symptom_category")),
 )
 
 
