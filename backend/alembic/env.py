@@ -12,7 +12,10 @@ import app.models  # noqa: F401  (registers all model tables on Base.metadata)
 
 config = context.config
 settings = get_settings()
-config.set_main_option("sqlalchemy.url", settings.database_url)
+# Only fall back to app settings if the caller hasn't already set a URL (e.g. a test
+# pointing this at a throwaway database via Config.set_main_option before invoking us).
+if not config.get_main_option("sqlalchemy.url"):
+    config.set_main_option("sqlalchemy.url", settings.database_url)
 
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)

@@ -42,7 +42,13 @@ def test_access_token_round_trips_subject() -> None:
 
 def test_decode_token_rejects_tampered_token() -> None:
     token = create_access_token("user-123")
-    tampered = token[:-1] + ("A" if token[-1] != "A" else "B")
+    header, payload, signature = token.split(".")
+    # Flip a character a few positions in, not the segment's last character: base64's
+    # final partial group can leave trailing bits as don't-care padding, so tampering
+    # only the very last character can occasionally decode to the same bytes and pass.
+    flipped = "a" if payload[5] != "a" else "b"
+    tampered_payload = payload[:5] + flipped + payload[6:]
+    tampered = ".".join([header, tampered_payload, signature])
     with pytest.raises(jwt.PyJWTError):
         decode_token(tampered)
 
