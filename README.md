@@ -9,15 +9,6 @@ Built as a portfolio project to demonstrate a layered backend architecture, a pr
 tested prediction algorithm, and a working CI/Docker setup end to end, rather than just a
 CRUD app with a database.
 
-**Live demo:** not deployed yet — see [Deployment](#deployment) for prepared configs and
-one-command instructions. Add your live URL here once you deploy it.
-
-## Screenshots
-
-*Run the app locally (see [Quickstart](#quickstart)) to see it in action — screenshots/GIF
-weren't captured for this build. The Dashboard, Calendar, Log Entry, and Trends pages are
-the ones worth showing.*
-
 ## Tech stack
 
 | Layer | Choice |

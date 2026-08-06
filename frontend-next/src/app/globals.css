@@ -1,0 +1,270 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   PTRACKER DESIGN SYSTEM — raw tokens
+   Soft, warm, feminine: blush and cream backgrounds, red/pink/rose accents,
+   light frosted glass. Token names below (void-*, aurora-*) are carried over
+   from an earlier dark theme and kept stable so every component that
+   references them re-themes automatically — only the *values* changed.
+   ========================================================================== */
+:root {
+  /* Background layers — soft blush/cream, lightest to a touch deeper */
+  --void-0: #fffaf9;
+  --void-1: #fef2f2;
+  --void-2: #fce8ea;
+  --void-3: #f8d9dd;
+  --void-4: #f0c0c7;
+
+  /* Text — warm charcoal-plum instead of pure black, for softness */
+  --text-primary: #3c2b30;
+  --text-secondary: #8a6a71;
+  --text-tertiary: #b5959b;
+
+  /* Accent spectrum — red/pink/rose */
+  --aurora-teal: #e0616f;
+  --aurora-violet: #f0a8bb;
+  --aurora-rose: #c94f63;
+  --aurora-gold: #f2b88a;
+
+  /* Semantic */
+  --state-success: #7bc79e;
+  --state-warning: #e8a24a;
+  --state-danger: #d94f5c;
+
+  /* Cycle phases — softened but still distinguishable against a light backdrop */
+  --phase-menstrual: #e0616f;
+  --phase-follicular: #8fb99a;
+  --phase-fertile: #f2b88a;
+  --phase-luteal: #b399c9;
+  --phase-unknown: #cbb6ba;
+
+  /* Glass surfaces — light frosted, not dark */
+  --glass-fill: rgba(255, 255, 255, 0.6);
+  --glass-fill-hover: rgba(255, 255, 255, 0.78);
+  --glass-border: rgba(201, 79, 99, 0.14);
+  --glass-highlight: rgba(255, 255, 255, 0.85);
+
+  /* Motion */
+  --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@theme inline {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-geist-sans);
+
+  --color-void-0: var(--void-0);
+  --color-void-1: var(--void-1);
+  --color-void-2: var(--void-2);
+  --color-void-3: var(--void-3);
+  --color-void-4: var(--void-4);
+
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-tertiary: var(--text-tertiary);
+
+  --color-aurora-teal: var(--aurora-teal);
+  --color-aurora-violet: var(--aurora-violet);
+  --color-aurora-rose: var(--aurora-rose);
+  --color-aurora-gold: var(--aurora-gold);
+
+  --color-state-success: var(--state-success);
+  --color-state-warning: var(--state-warning);
+  --color-state-danger: var(--state-danger);
+
+  --color-phase-menstrual: var(--phase-menstrual);
+  --color-phase-follicular: var(--phase-follicular);
+  --color-phase-fertile: var(--phase-fertile);
+  --color-phase-luteal: var(--phase-luteal);
+  --color-phase-unknown: var(--phase-unknown);
+
+  --color-glass-fill: var(--glass-fill);
+  --color-glass-fill-hover: var(--glass-fill-hover);
+  --color-glass-border: var(--glass-border);
+  --color-glass-highlight: var(--glass-highlight);
+
+  --radius-xs: 0.5rem;
+  --radius-sm: 0.75rem;
+  --radius-md: 1rem;
+  --radius-lg: 1.5rem;
+  --radius-xl: 2rem;
+  --radius-pill: 999px;
+
+  --animate-float: float 8s var(--ease-premium) infinite;
+  --animate-shimmer: shimmer 2.2s linear infinite;
+  --animate-glow-pulse: glow-pulse 4s ease-in-out infinite;
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0) translateX(0);
+    }
+    50% {
+      transform: translateY(-14px) translateX(6px);
+    }
+  }
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+  @keyframes glow-pulse {
+    0%,
+    100% {
+      opacity: 0.55;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+  @keyframes pop-in {
+    from {
+      opacity: 0;
+      transform: scale(0.96) translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+  @keyframes pop-out {
+    from {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+    to {
+      opacity: 0;
+      transform: scale(0.96) translateY(4px);
+    }
+  }
+  @keyframes overlay-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+/* Radix data-state driven enter/exit — deliberately hand-rolled rather than pulling
+   in a shadcn-style animation plugin. `$="open"` covers plain "open" (Dialog/Select)
+   as well as Tooltip's "delayed-open"/"instant-open". */
+.pop-surface[data-state$="open"] {
+  animation: pop-in 0.18s var(--ease-out-soft);
+}
+.pop-surface[data-state="closed"] {
+  animation: pop-out 0.14s var(--ease-out-soft);
+}
+.overlay-surface[data-state$="open"] {
+  animation: overlay-in 0.2s var(--ease-out-soft);
+}
+
+* {
+  border-color: var(--glass-border);
+}
+
+html {
+  color-scheme: light;
+}
+
+body {
+  background: var(--void-0);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Layered radial gradients standing in for real depth without a 3D scene on
+   every route — a soft, subtle red/pink wash rather than the dark aurora glow
+   this replaced. */
+.void-field {
+  position: relative;
+  isolation: isolate;
+}
+.void-field::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(60% 50% at 15% 8%, rgba(224, 97, 111, 0.1), transparent 60%),
+    radial-gradient(55% 45% at 88% 12%, rgba(240, 168, 187, 0.14), transparent 60%),
+    radial-gradient(50% 50% at 50% 100%, rgba(201, 79, 99, 0.08), transparent 65%),
+    var(--void-0);
+}
+.void-field::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.25;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.85 0 0 0 0 0.6 0 0 0 0 0.65 0 0 0 0.02 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.glass {
+  background: var(--glass-fill);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  box-shadow:
+    inset 0 1px 0 0 var(--glass-highlight),
+    0 8px 40px -14px rgba(201, 79, 99, 0.22);
+}
+
+.aurora-text {
+  background: linear-gradient(
+    100deg,
+    var(--aurora-teal) 0%,
+    var(--aurora-violet) 50%,
+    var(--aurora-rose) 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.aurora-ring-focus:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px var(--void-0),
+    0 0 0 4px var(--aurora-teal);
+}
+
+::selection {
+  background: rgba(224, 97, 111, 0.22);
+  color: var(--color-text-primary);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--void-4);
+  border-radius: 999px;
+  border: 2px solid var(--void-0);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--aurora-teal);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
