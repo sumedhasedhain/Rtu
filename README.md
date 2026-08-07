@@ -97,9 +97,10 @@ cd frontend-next && npm run test && npm run lint && npm run build
 - **Backend** — Render, using `render.yaml`: import as a Blueprint, then set
   `DATABASE_URL` (your Neon connection string) and `CORS_ORIGINS` (your frontend URLs)
   yourself in the dashboard. They're deliberately left blank in the file rather than
-  committed as placeholders.
-- **Frontend** — Vercel, one project per client. Set the project's root directory to
-  `frontend` or `frontend-next`, and point `VITE_API_BASE_URL` /
+  committed as placeholders. Live at `https://cycle-tracker-api-gif1.onrender.com`.
+- **Frontend** — Netlify, one site per client. Both have a `netlify.toml` ready
+  (`frontend-next`'s uses Netlify's official Next.js Runtime plugin). Set the site's base
+  directory to `frontend` or `frontend-next`, and point `VITE_API_BASE_URL` /
   `NEXT_PUBLIC_API_BASE_URL` at the backend's `/api/v1`.
 
 ## Rough edges, honestly
