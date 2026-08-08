@@ -1,4 +1,5 @@
 from functools import lru_cache
+from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -23,9 +24,17 @@ class Settings(BaseSettings):
         elif v.startswith("postgresql://"):
             v = "postgresql+asyncpg://" + v[len("postgresql://") :]
         if v.startswith("postgresql+asyncpg://"):
-            # libpq-style `sslmode` (what Neon/Render/Heroku-style URLs use) isn't a valid
-            # asyncpg.connect() kwarg — it wants `ssl` instead.
-            v = v.replace("sslmode=", "ssl=")
+            # asyncpg.connect() only accepts a small, specific set of kwargs. Managed
+            # providers (Neon, Render, Heroku-style) hand out libpq-only query params
+            # (sslmode, channel_binding, ...) that asyncpg rejects outright with a
+            # TypeError. Keep just `ssl` (renamed from libpq's `sslmode`) and drop the rest.
+            parts = urlsplit(v)
+            query = dict(parse_qsl(parts.query))
+            sslmode = query.pop("sslmode", None)
+            query.pop("channel_binding", None)
+            if sslmode and "ssl" not in query:
+                query["ssl"] = sslmode
+            v = urlunsplit(parts._replace(query=urlencode(query)))
         return v
 
     secret_key: str = "dev-secret-key-change-me"

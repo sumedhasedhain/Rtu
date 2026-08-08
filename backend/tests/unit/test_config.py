@@ -24,3 +24,10 @@ def test_sqlite_url_is_left_alone() -> None:
 def test_sslmode_query_param_is_rewritten_for_asyncpg() -> None:
     settings = Settings(database_url="postgresql://user:pass@host:5432/db?sslmode=require")
     assert settings.database_url == "postgresql+asyncpg://user:pass@host:5432/db?ssl=require"
+
+
+def test_channel_binding_query_param_is_dropped_for_asyncpg() -> None:
+    settings = Settings(
+        database_url="postgresql://user:pass@host:5432/db?sslmode=require&channel_binding=require"
+    )
+    assert settings.database_url == "postgresql+asyncpg://user:pass@host:5432/db?ssl=require"
