@@ -19,9 +19,13 @@ class Settings(BaseSettings):
         # Managed Postgres providers (Render, Railway, Heroku-style envs) hand out a bare
         # postgres(ql):// URL; our SQLAlchemy engine is async and needs the asyncpg driver.
         if v.startswith("postgres://"):
-            return "postgresql+asyncpg://" + v[len("postgres://") :]
-        if v.startswith("postgresql://"):
-            return "postgresql+asyncpg://" + v[len("postgresql://") :]
+            v = "postgresql+asyncpg://" + v[len("postgres://") :]
+        elif v.startswith("postgresql://"):
+            v = "postgresql+asyncpg://" + v[len("postgresql://") :]
+        if v.startswith("postgresql+asyncpg://"):
+            # libpq-style `sslmode` (what Neon/Render/Heroku-style URLs use) isn't a valid
+            # asyncpg.connect() kwarg — it wants `ssl` instead.
+            v = v.replace("sslmode=", "ssl=")
         return v
 
     secret_key: str = "dev-secret-key-change-me"
