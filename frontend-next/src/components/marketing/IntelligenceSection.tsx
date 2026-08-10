@@ -16,7 +16,7 @@ export function IntelligenceSection() {
             The prediction engine
           </span>
           <h2 className="mt-4 text-3xl font-semibold tracking-tight text-text-primary sm:text-4xl">
-            Confidence, honestly earned
+            How predictions are calculated
           </h2>
           <p className="mt-5 text-text-secondary leading-relaxed">
             Most trackers assume a flat 28-day cycle. Rtu weights your most recent
