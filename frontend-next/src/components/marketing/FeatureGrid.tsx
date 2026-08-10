@@ -66,7 +66,7 @@ export function FeatureGrid() {
     <section id="features" className="relative mx-auto max-w-6xl px-6 py-32">
       <div ref={headingRef} className="mx-auto mb-16 max-w-xl text-center">
         <h2 className="text-3xl font-semibold tracking-tight text-text-primary sm:text-4xl">
-          Built like software, not a spreadsheet
+          Clearer way to understand your cycle.
         </h2>
         <p className="mt-4 text-text-secondary">
           Every piece of this app — the prediction engine, the calendar, the charts — was
