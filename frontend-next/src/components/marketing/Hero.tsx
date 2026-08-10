@@ -46,7 +46,7 @@ export function Hero() {
           variants={fadeRise}
           className="mt-3 max-w-xl text-balance text-lg text-text-secondary"
         >
-          Rtu turns your logged cycles into precise predictions — next period,
+          Rtu turns your logged cycles into personalized predictions — next period,
           fertile window, phase — rendered in an interface as gentle as it is smart.
         </motion.p>
 
